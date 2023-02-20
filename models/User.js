@@ -3,28 +3,22 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
+    required: [true, 'Please provide a username'],
     unique: true,
-    required: [true, 'Please enter a username'],
-    trim: true,
-    lowercase: true
+    trim: true
   },
   email: {
     type: String,
-    required: [true, 'Please enter an email'],
-    unique: [true, 'Email already exists'],
+    required: [true, 'Please provide an email address'],
+    unique: [true, 'This email address is already registered, Please another one!'],
     trim: true,
     lowercase: true,
-    validate: {
-      validator: function (value) {
-        const emailRegex = /^\S+@\S+\.\S+$/;
-        return emailRegex.test(value);
-      },
-      message: props => `${props.value} is not a valid email address!`
-    }
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address']
   },
   password: {
     type: String,
-    required: [true, 'Please enter a password'],
+    required: [true, 'Please provide a password'],
+    minlength: [6, 'Password must be at least 6 characters long'],
     trim: true
   }
 });
